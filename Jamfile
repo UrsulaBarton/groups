@@ -1,0 +1,53 @@
+#==============================================================================
+#   Copyright (c) 2014 Jeff Garland
+#   Copyright (c) 2014, 2015 Michael Caisse
+#
+#   Use, modification and distribution is subject to the Boost Software
+#   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+#   http://www.boost.org/LICENSE_1_0.txt)
+#==============================================================================
+
+# bring in rules for testing
+import testing ;
+import modules ;
+import feature ;
+
+###############################################################################
+project boostache_test
+    : requirements
+        <include>.
+        <source>/boost//unit_test_framework
+        <source>/boost//system
+        <source>/boost//filesystem
+	<define>BOOST_TEST_DYN_LINK
+    ;
+
+
+{
+   test-suite vm :
+       [ run vm/foreach.cpp ]
+    ;
+
+   test-suite boostache/frontend :
+       [ run frontend/grammar_basic.cpp ]
+    ;
+
+   test-suite boostache/model :
+       [ run model/traits.cpp ]
+       [ run model/render_traits.cpp ]
+#       [ run model/unwrap_variant.cpp ]
+   ;
+
+   test-suite boostache/mustache :
+      [ run mustache/mustache_parser.cpp 
+	    shared/parser_test.cpp
+	]
+      [ run mustache/mustache_compiler.cpp 
+	    shared/parser_test.cpp
+	]
+      [ run mustache/mustache_end2end.cpp 
+	    shared/parser_test.cpp
+	: --log_level=message
+	]
+   ;
+}
